@@ -9,6 +9,7 @@ import MailIcon from '@material-ui/icons/Mail';
 import Menu from '@material-ui/icons/Menu';
 import { IconButton } from '@material-ui/core';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const useStyles = makeStyles({
   list: {
@@ -21,6 +22,7 @@ const useStyles = makeStyles({
 
 export default function TemporaryDrawer() {
   const classes = useStyles();
+  const isLogin = useSelector((state) => state.example.botaoClicado);
   const [state, setState] = React.useState({
     top: false,
     left: false,
@@ -51,7 +53,7 @@ export default function TemporaryDrawer() {
           <ListItemIcon>
             <MailIcon />
           </ListItemIcon>
-          <ListItemText primary="Login" />
+          <ListItemText primary={isLogin ? 'logado' : 'login'} />
         </ListItem>
       </List>
     </div>
