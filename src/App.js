@@ -5,10 +5,11 @@ import { BrowserRouter } from 'react-router-dom';
 import Routes from 'routes';
 import theme from 'theme';
 import TemporaryDrawer from 'components/Drawer';
-import CustomizedSnackbars from 'components/SnackBar';
 import { Provider } from 'react-redux';
 import store, { persistor } from 'store';
 import { PersistGate } from 'redux-persist/lib/integration/react';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
 
 function App() {
   return (
@@ -20,8 +21,8 @@ function App() {
             <BrowserRouter>
               <TemporaryDrawer />
               <Routes />
+              <ToastContainer />
             </BrowserRouter>
-            <CustomizedSnackbars snackOpen snackMessage="teste" />
           </PersistGate>
         </Container>
       </ThemeProvider>

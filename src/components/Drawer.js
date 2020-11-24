@@ -8,8 +8,10 @@ import ListItemText from '@material-ui/core/ListItemText';
 import MailIcon from '@material-ui/icons/Mail';
 import Menu from '@material-ui/icons/Menu';
 import { IconButton } from '@material-ui/core';
-import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { Link, useHistory } from 'react-router-dom';
+import useLogin from 'services/isLoggedIn';
+import * as actions from 'store/modules/auth/actions';
+import { useDispatch } from 'react-redux';
 
 const useStyles = makeStyles({
   list: {
@@ -22,13 +24,16 @@ const useStyles = makeStyles({
 
 export default function TemporaryDrawer() {
   const classes = useStyles();
-  const isLogin = useSelector((state) => state.example.botaoClicado);
   const [state, setState] = React.useState({
     top: false,
     left: false,
     bottom: false,
     right: false,
   });
+
+  const isLogin = useLogin();
+  const history = useHistory();
+  const dispatch = useDispatch();
 
   const toggleDrawer = (side, open) => (event) => {
     if (
@@ -41,6 +46,14 @@ export default function TemporaryDrawer() {
     setState({ ...state, [side]: open });
   };
 
+  const logout = (e) => {
+    e.preventDefault();
+    dispatch(actions.loginFailure());
+    setTimeout(() => {
+      history.push('/');
+    }, 2000);
+  };
+
   const sideList = (side) => (
     <div
       className={classes.list}
@@ -49,12 +62,32 @@ export default function TemporaryDrawer() {
       onKeyDown={toggleDrawer(side, false)}
     >
       <List>
-        <ListItem button component={Link} to="/login">
+        <ListItem button component={Link} to="/">
           <ListItemIcon>
             <MailIcon />
           </ListItemIcon>
-          <ListItemText primary={isLogin ? 'logado' : 'login'} />
+          <ListItemText primary="Alunos" />
         </ListItem>
+        <ListItem button component={Link} to="/student">
+          <ListItemIcon>
+            <MailIcon />
+          </ListItemIcon>
+          <ListItemText primary="Criar Aluno" />
+        </ListItem>
+        <ListItem button component={Link} to="/register">
+          <ListItemIcon>
+            <MailIcon />
+          </ListItemIcon>
+          <ListItemText primary={isLogin ? 'Editar Dados' : 'Criar conta'} />
+        </ListItem>
+        {isLogin && (
+          <ListItem button onClick={logout}>
+            <ListItemIcon>
+              <MailIcon />
+            </ListItemIcon>
+            <ListItemText primary="Logout" />
+          </ListItem>
+        )}
       </List>
     </div>
   );
